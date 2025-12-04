@@ -526,10 +526,12 @@ func TestFunctionTool_CustomSchema(t *testing.T) {
 				if tc.wantErr && err == nil {
 					t.Errorf("inventoryTool.Run = (%v, %v), want error", ret, err)
 				}
-				if !tc.wantErr && (err != nil || ret != nil) {
-					// TODO: fix, for "valid_item" case now it returns empty map instead of nil
-					if len(ret) != 0 {
-						t.Errorf("inventoryTool.Run = (%v, %v), want (nil, nil)", ret, err)
+				if !tc.wantErr {
+					if err != nil {
+						t.Errorf("inventoryTool.Run = (%v, %v), want nil error", ret, err)
+					}
+					if ret != nil {
+						t.Errorf("inventoryTool.Run = (%v, %v), want nil result", ret, err)
 					}
 				}
 			})
