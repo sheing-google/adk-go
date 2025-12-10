@@ -33,6 +33,8 @@ func NewHandler(config *launcher.Config) http.Handler {
 	telemetry.AddSpanProcessor(sdktrace.NewSimpleSpanProcessor(adkExporter))
 
 	router := mux.NewRouter().StrictSlash(true)
+	router.Use(securityHeadersMiddleware)
+
 	// TODO: Allow taking a prefix to allow customizing the path
 	// where the ADK REST API will be served.
 	setupRouter(router,
