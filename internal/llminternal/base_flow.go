@@ -406,7 +406,7 @@ func (f *Flow) handleFunctionCalls(ctx agent.InvocationContext, toolsDict map[st
 		ev.Author = ctx.Agent().Name()
 		ev.Branch = ctx.Branch()
 		ev.Actions = *toolCtx.Actions()
-		telemetry.TraceToolCall(spans, curTool, fnCall.Args, ev)
+		telemetry.TraceToolCall(spans, ctx, curTool, fnCall.Args, ev)
 		fnResponseEvents = append(fnResponseEvents, ev)
 	}
 	mergedEvent, err := mergeParallelFunctionResponseEvents(fnResponseEvents)
@@ -415,7 +415,7 @@ func (f *Flow) handleFunctionCalls(ctx agent.InvocationContext, toolsDict map[st
 	}
 	// this is needed for debug traces of parallel calls
 	spans := telemetry.StartTrace(ctx, "execute_tool (merged)")
-	telemetry.TraceMergedToolCalls(spans, mergedEvent)
+	telemetry.TraceMergedToolCalls(spans, ctx, mergedEvent)
 	return mergedEvent, nil
 }
 
