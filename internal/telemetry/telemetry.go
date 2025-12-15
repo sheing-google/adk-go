@@ -58,6 +58,7 @@ const (
 	genAiToolCallID       = "gen_ai.tool.call.id"
 	genAiSystemName       = "gen_ai.system"
 	genAiRequestModelName = "gen_ai.request.model"
+	genAiConversationID   = "gen_ai.conversation.id"
 
 	gcpVertexAgentLLMRequestName   = "gcp.vertex.agent.llm_request"
 	gcpVertexAgentToolCallArgsName = "gcp.vertex.agent.tool_call_args"
@@ -118,12 +119,13 @@ func StartTrace(ctx context.Context, traceName string) []trace.Span {
 }
 
 // TraceMergedToolCalls traces the tool execution events.
-func TraceMergedToolCalls(spans []trace.Span, fnResponseEvent *session.Event) {
+func TraceMergedToolCalls(spans []trace.Span, agentCtx agent.InvocationContext, fnResponseEvent *session.Event) {
 	if fnResponseEvent == nil {
 		return
 	}
 	for _, span := range spans {
 		attributes := []attribute.KeyValue{
+			attribute.String(genAiConversationID, agentCtx.Session().ID()),
 			attribute.String(genAiOperationName, executeToolName),
 			attribute.String(genAiToolName, mergeToolName),
 			attribute.String(genAiToolDescription, mergeToolName),
@@ -141,12 +143,13 @@ func TraceMergedToolCalls(spans []trace.Span, fnResponseEvent *session.Event) {
 }
 
 // TraceToolCall traces the tool execution events.
-func TraceToolCall(spans []trace.Span, tool tool.Tool, fnArgs map[string]any, fnResponseEvent *session.Event) {
+func TraceToolCall(spans []trace.Span, agentCtx agent.InvocationContext, tool tool.Tool, fnArgs map[string]any, fnResponseEvent *session.Event) {
 	if fnResponseEvent == nil {
 		return
 	}
 	for _, span := range spans {
 		attributes := []attribute.KeyValue{
+			attribute.String(genAiConversationID, agentCtx.Session().ID()),
 			attribute.String(genAiOperationName, executeToolName),
 			attribute.String(genAiToolName, tool.Name()),
 			attribute.String(genAiToolDescription, tool.Description()),
@@ -195,6 +198,7 @@ func TraceLLMCall(spans []trace.Span, agentCtx agent.InvocationContext, llmReque
 			attribute.String(genAiRequestModelName, llmRequest.Model),
 			attribute.String(gcpVertexAgentInvocationID, event.InvocationID),
 			attribute.String(gcpVertexAgentSessionID, agentCtx.Session().ID()),
+			attribute.String(genAiConversationID, agentCtx.Session().ID()),
 			attribute.String(gcpVertexAgentEventID, event.ID),
 			attribute.String(gcpVertexAgentLLMRequestName, safeSerialize(llmRequestToTrace(llmRequest))),
 			attribute.String(gcpVertexAgentLLMResponseName, safeSerialize(event.LLMResponse)),
