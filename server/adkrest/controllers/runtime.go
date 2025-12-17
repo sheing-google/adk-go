@@ -51,7 +51,7 @@ func (c *RuntimeAPIController) RunHandler(rw http.ResponseWriter, req *http.Requ
 	if err != nil {
 		return err
 	}
-	var events []models.Event
+	events := []models.Event{}
 	for _, event := range sessionEvents {
 		events = append(events, models.FromSessionEvent(*event))
 	}
@@ -126,7 +126,7 @@ func (c *RuntimeAPIController) RunSSEHandler(rw http.ResponseWriter, req *http.R
 				return newStatusError(fmt.Errorf("failed to flush: %w", err), http.StatusInternalServerError)
 			}
 
-			continue
+			return nil
 		}
 		err := flashEvent(rc, rw, *event)
 		if err != nil {
