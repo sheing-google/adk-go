@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"iter"
+	"log"
 	"os"
 	"strings"
 
@@ -302,8 +303,9 @@ func updateCustomMetadata(event *session.Event, request *a2a.MessageSendParams, 
 }
 
 func destroy(client *a2aclient.Client) {
-	// TODO(yarolegovich): log ignored error
-	_ = client.Destroy()
+	if err := client.Destroy(); err != nil {
+		log.Printf("adk: a2a client could not be destroyed: %v", err)
+	}
 }
 
 func runBeforeA2ARequestCallbacks(ctx agent.InvocationContext, cfg A2AConfig, req *a2a.MessageSendParams) (*session.Event, error) {
