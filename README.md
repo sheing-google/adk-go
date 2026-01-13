@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK) for Go
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License](https.://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Go Doc](https://img.shields.io/badge/Go%20Package-Doc-blue.svg)](https://pkg.go.dev/google.golang.org/adk)
 [![Nightly Check](https://github.com/google/adk-go/actions/workflows/nightly.yml/badge.svg)](https://github.com/google/adk-go/actions/workflows/nightly.yml)
 [![r/agentdevelopmentkit](https://img.shields.io/badge/Reddit-r%2Fagentdevelopmentkit-FF4500?style=flat&logo=reddit&logoColor=white)](https://www.reddit.com/r/agentdevelopmentkit/)
@@ -51,3 +51,5 @@ This project is licensed under the Apache 2.0 License - see the
 [LICENSE](LICENSE) file for details.
 
 The exception is internal/httprr - see its [LICENSE file](internal/httprr/LICENSE).
+
+Goodnight
